@@ -23,3 +23,14 @@ body {
 .react-flow__edge {
   cursor: pointer;
 }
+
+.react-flow__edge-path {
+  stroke-width: 3px !important;
+  stroke: #6366f1 !important;
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: #4f46e5 !important;
+  stroke-width: 4px !important;
+}
+

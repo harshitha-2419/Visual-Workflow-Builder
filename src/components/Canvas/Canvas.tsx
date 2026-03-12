@@ -38,17 +38,22 @@ export const Canvas: React.FC<CanvasProps> = ({ draggedTemplate }) => {
     },
   }));
 
-  const edges: Edge[] = present.edges.map(edge => ({
-    id: edge.id,
-    source: edge.source,
-    target: edge.target,
-    animated: currentExecutingNode === edge.source,
-    style: { stroke: currentExecutingNode === edge.source ? '#3b82f6' : '#94a3b8' },
-  }));
+const edges: Edge[] = present.edges.map(edge => ({
+  id: edge.id,
+  source: edge.source,
+  target: edge.target,
+  animated: currentExecutingNode === edge.source,
+  style: { 
+    stroke: currentExecutingNode === edge.source ? '#3b82f6' : '#6366f1',
+    strokeWidth: 3
+  },
+}));
+
+
 
   const onNodesChange = useCallback((changes: NodeChange[]) => {
     changes.forEach(change => {
-      if (change.type === 'position' && change.position && !change.dragging) {
+      if (change.type === 'position' && change.position) {
         updateNodePosition(change.id, change.position);
       }
     });
@@ -125,9 +130,17 @@ export const Canvas: React.FC<CanvasProps> = ({ draggedTemplate }) => {
         nodeTypes={nodeTypes}
         fitView
       >
-        <Background />
+        <Background color="#94a3b8" gap={16} size={1} />
         <Controls />
-        <MiniMap />
+        <MiniMap 
+          nodeColor={(node) => {
+            if (node.data.nodeType === 'trigger') return '#22c55e';
+            if (node.data.nodeType === 'action') return '#3b82f6';
+            if (node.data.nodeType === 'condition') return '#eab308';
+            return '#6b7280';
+          }}
+          maskColor="rgba(0, 0, 0, 0.1)"
+        />
       </ReactFlow>
     </div>
   );

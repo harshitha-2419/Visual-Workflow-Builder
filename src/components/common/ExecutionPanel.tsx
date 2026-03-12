@@ -1,13 +1,19 @@
 import React from 'react';
 import { useWorkflowStore } from '../../store/workflowStore';
-import { CheckCircle, XCircle, Clock, Loader } from 'lucide-react';
+import { CheckCircle, XCircle, Clock, Loader, X } from 'lucide-react';
 
 export const ExecutionPanel: React.FC = () => {
-  const { executionLogs, executing } = useWorkflowStore();
+  const { executionLogs, executing, clearExecutionLogs } = useWorkflowStore();
 
   if (executionLogs.length === 0 && !executing) {
     return null;
   }
+
+  const handleClose = () => {
+    if (!executing) {
+      clearExecutionLogs();
+    }
+  };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -31,12 +37,23 @@ export const ExecutionPanel: React.FC = () => {
     <div className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 h-48 overflow-hidden flex flex-col">
       <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
         <h3 className="font-semibold text-gray-800 dark:text-gray-100">Execution Logs</h3>
-        {executing && (
-          <span className="text-sm text-blue-500 flex items-center gap-2">
-            <Loader size={14} className="animate-spin" />
-            Running...
-          </span>
-        )}
+        <div className="flex items-center gap-3">
+          {executing && (
+            <span className="text-sm text-blue-500 flex items-center gap-2">
+              <Loader size={14} className="animate-spin" />
+              Running...
+            </span>
+          )}
+          {!executing && executionLogs.length > 0 && (
+            <button
+              onClick={handleClose}
+              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+              title="Clear logs"
+            >
+              <X size={20} />
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-2 font-mono text-sm">
