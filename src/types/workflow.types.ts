@@ -1,10 +1,15 @@
-export type NodeType = 'trigger' | 'action' | 'condition';
+export type NodeType = 'trigger' | 'action' | 'condition' | 'shape' | 'size' | 'zoom';
+
+export type ShapeType = 'cube' | 'sphere' | 'cylinder' | 'cone' | 'torus';
 
 export interface NodeData {
   label: string;
   type: NodeType;
   config: Record<string, any>;
   description?: string;
+  selectedShape?: ShapeType;
+  dimensions?: { width: number; height: number; count: number };
+  zoomLevel?: number;
 }
 
 export interface WorkflowNode {
